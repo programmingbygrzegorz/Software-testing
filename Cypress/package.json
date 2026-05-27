@@ -1,0 +1,20 @@
+{
+  "name": "project-cypress",
+  "version": "1.0.0",
+  "description": "Test automation in Cypress",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cypress",
+    "test",
+    "automation",
+    "testing"
+  ],
+  "author": "Grzegorz Starzynski",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.14.2"
+  }
+}
