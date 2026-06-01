@@ -5,13 +5,13 @@ class Search{
         return cy.get("#search");
     }
 
-    typeInSearchBox() {
-    this.searchBox.type(SearchPhrase);
-    //typeInSearchBox(SerchValue) {
-    //this.searchBox.type(SerchValue);
+//typeInSearchBox() {
+  // this.searchBox.type(SearchPhrase);
+    typeInSearchBox(SerchValue) {
+         this.searchBox.type(SerchValue);
     }
     clearSearchPhrase() {
-        this.SearchBox.clear();
+        this.searchBox.clear();
 
     }
 }

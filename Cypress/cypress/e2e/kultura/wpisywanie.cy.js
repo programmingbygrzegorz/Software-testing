@@ -1,10 +1,11 @@
 /// <reference types="cypress" />
 import Base from '../../pages/base';
 import Search from '../../pages/Search';
-import searchData from '../../fixtures/searchData.json';
+import { searchPhrase } from '../../fixtures/searchData.json';
 
 describe('Wpisywanie tekstu w wyszukiwarke', () => {
-    it('Wpisywanie tekstu', () => {
+    it('Wpisywanie tekstu w wyszukiwarke', () => { 
+           
         Base.openHomePage();
         //Search.typeInSearchBox("Raz Dwa Trzy");
         Search.typeInSearchBox(searchPhrase);
