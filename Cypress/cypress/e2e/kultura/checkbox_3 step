@@ -1,0 +1,11 @@
+// it('Krok 3: Zaznaczanie wszystkich checkboxów w sekcji Tagi', () => {
+    // 1. Znajdujemy kontener po samej klasie i zaznaczamy wszystkie checkboxy na raz
+   // cy.get('.form__fieldset input[type="checkbox"]')
+     // .should('exist')         // Upewniamy się, że elementy są w kodzie strony
+     // .check({ force: true }); // Wymuszamy zaznaczenie ukrytych przez CSS inputów (0x0px)
+
+    // 2. Opcjonalnie: Przechodzimy przez każdy checkbox i sprawdzamy, czy na pewno jest zaznaczony
+    //cy.get('.form__fieldset input[type="checkbox"]').each(($el) => {
+      //  cy.wrap($el).should('be.checked');
+    //});
+//});
