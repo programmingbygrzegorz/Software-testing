@@ -24,6 +24,7 @@ export const config: WebdriverIO.Config = {
     //
     specs: [
         // ToDo: define location for spec files here
+            "./src/spec/**/*.ts"
     ],
     // Patterns to exclude.
     exclude: [
@@ -45,7 +46,7 @@ export const config: WebdriverIO.Config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1, //zmienilem z 10 na 1 
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -62,7 +63,7 @@ export const config: WebdriverIO.Config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'error', //zmienilem z info na error
     //
     // Set specific log levels per logger
     // loggers:
@@ -80,7 +81,7 @@ export const config: WebdriverIO.Config = {
     //
     // If you only want to run your tests until a specific amount of tests have failed use
     // bail (default is 0 - don't bail, run all tests).
-    bail: 0,
+    bail: 0, //wywalil sie test to jeszcze raz wykonuje sie 
     //
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
@@ -89,7 +90,7 @@ export const config: WebdriverIO.Config = {
     // baseUrl: 'http://localhost:8080',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 10000, //czeka az cos wykona sie przez 10 sekund, potem wywala blad
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -102,8 +103,8 @@ export const config: WebdriverIO.Config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['visual'],
-
+   // services: ['visual'], zakomentowałem powienien byc chromedriver
+    services: ['chromedriver'],
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
