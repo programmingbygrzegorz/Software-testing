@@ -25,6 +25,7 @@ function createNewUser(firstName, lastName, age, isWomen, level, hobby) {
 
 createNewUser(firstName, lastName, age, isWomen, level, hobby);
 */
+
 enum JobLevel {
     Junior = "Junior",
     Mid = "Mid",
