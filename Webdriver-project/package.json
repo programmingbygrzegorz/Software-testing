@@ -4,6 +4,7 @@
   "description": "Automatyzacja kurs",
   "main": "index.js",
   "scripts": {
+    "e2e": "wdio wdio.conf.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "wdio": "wdio run ./wdio.conf.ts"
   },
