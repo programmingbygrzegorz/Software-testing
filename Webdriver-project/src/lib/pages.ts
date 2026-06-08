@@ -1,0 +1,1 @@
+export const homeUrl:string ="https://www.gama-sklep.com.pl/"

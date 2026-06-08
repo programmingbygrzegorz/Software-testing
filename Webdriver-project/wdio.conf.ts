@@ -26,6 +26,14 @@ export const config: WebdriverIO.Config = {
         // ToDo: define location for spec files here
             "./src/spec/**/*.ts"
     ],
+    
+    suites:{
+
+        lekcja1: [
+            "./src/spec/e2e/input.ts"
+
+        ]
+    },
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -206,8 +214,9 @@ export const config: WebdriverIO.Config = {
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    // beforeTest: function (test, context) {
-    // },
+     beforeTest: function (test, context) {
+        browser.maximizeWindow();
+     },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
