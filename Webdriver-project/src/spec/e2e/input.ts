@@ -1,5 +1,6 @@
 import { homeUrl } from "../../lib/pages"; 
 // Importuje stałą homeUrl z pliku pages.ts (adres strony testowanej)
+import { searchPhrase, homePageTitle } from "../../lib/wordData";
 
 describe("Lesson 1 - Input", () => { 
 // Grupa testów (test suite) – wszystkie testy w środku dotyczą jednej funkcjonalności
@@ -13,7 +14,7 @@ describe("Lesson 1 - Input", () => {
         await expect(browser).toHaveUrl(homeUrl); 
         // Sprawdza czy aktualny URL przeglądarki jest taki jak homeUrl
 
-        await expect(browser).toHaveTitle("Meble - Internetowy Sklep Meblowy Gama"); 
+        await expect(browser).toHaveTitle(homePageTitle); 
         // Sprawdza czy tytuł strony (tab przeglądarki) jest zgodny z oczekiwanym
     });
 
@@ -26,10 +27,10 @@ describe("Lesson 1 - Input", () => {
         await input.waitForDisplayed(); 
         // Czeka aż input będzie widoczny na stronie (żeby uniknąć błędów)
 
-        await input.setValue("Szafa"); 
+        await input.setValue(searchPhrase); 
         // Wpisuje tekst "Szafa" do pola input
 
-        expect(await input.getValue()).toContain("Szafa"); 
+        expect(await input.getValue()).toContain(searchPhrase); 
         // Sprawdza czy wartość inputa zawiera tekst "Szafa"
 
         await browser.keys("Enter"); 

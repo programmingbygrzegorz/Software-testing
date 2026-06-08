@@ -214,7 +214,7 @@ export const config: WebdriverIO.Config = {
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-     beforeTest: function (test, context) {
+     beforeTest: function (_test, _contex) {
         browser.maximizeWindow();
      },
     /**
