@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "wdio": "wdio run ./wdio.conf.ts",
     "lekcja1": "wdio run wdio.conf.ts --suite lekcja1",
-    "lekcja2": "wdio run wdio.conf.ts --suite lekcja2"
+    "lekcja2": "wdio run wdio.conf.ts --suite lekcja2",
+    "lekcja3": "wdio run wdio.conf.ts --suite lekcja3"
   },
   "keywords": [
     "automatyzacja",
