@@ -13,7 +13,8 @@
             "@wdio/globals/types",
             "expect-webdriverio",
             "@wdio/mocha-framework",
-            "@wdio/visual-service"
+            //zakomentowałem
+            //"@wdio/visual-service"
         ],
         "skipLibCheck": true,
         "noEmit": true,

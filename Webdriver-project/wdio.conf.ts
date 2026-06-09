@@ -32,6 +32,9 @@ export const config: WebdriverIO.Config = {
         lekcja1: [
             "./src/spec/e2e/input.ts"
 
+        ],
+        lekcja2 : [
+            "./src/spec/e2e/checkbox.ts"
         ]
     },
     // Patterns to exclude.

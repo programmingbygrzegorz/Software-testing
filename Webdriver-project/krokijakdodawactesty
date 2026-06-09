@@ -1,0 +1,1 @@
+Kroki jak dodawać testy- 1.W wdio.conf.ts dodajemy lekcja2 sciezka gdzie jest skrypt.2.Wpackage.json definiujemy skrypt.
