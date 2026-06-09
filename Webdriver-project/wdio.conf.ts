@@ -39,6 +39,10 @@ export const config: WebdriverIO.Config = {
         lekcja3 : [
             "./src/spec/e2e/dropdown.ts"
         ] 
+        ,
+        lekcjadropdownb : [
+            "./src/spec/e2e/dropdownb.ts"
+        ] 
 
     },
     // Patterns to exclude.
