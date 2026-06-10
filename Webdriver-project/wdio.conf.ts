@@ -42,8 +42,11 @@ export const config: WebdriverIO.Config = {
         ,
         lekcjadropdownb : [
             "./src/spec/e2e/dropdownb.ts"
+        ],
+        
+        lekcja4 : [
+            "./src/spec/e2e/windows.ts"
         ] 
-
     },
     // Patterns to exclude.
     exclude: [
