@@ -27,7 +27,7 @@ describe("Lesson 4 - Windows", async () => {
         await expect(browser).toHaveTitle("Meble - Internetowy Sklep Meblowy Gama")
 
         await browser.switchWindow(openWindows[1]);
-        const windowTitle2: string = await browser.getTitle();
+      
         await expect(browser).toHaveTitle("Best E-commerce PrestaShop Theme");
         
     });
