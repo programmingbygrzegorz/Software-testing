@@ -78,7 +78,9 @@ export const config: WebdriverIO.Config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'chrome',
+        // zapobiega automatycznemu zamykaniu alertów JS przez WebDriver
+        unhandledPromptBehavior: 'ignore'
     }],
 
     //
