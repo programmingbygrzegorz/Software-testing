@@ -80,9 +80,17 @@ it("Should verify confirm alert", async () => {
 });
    
 
-    it("Should verify prompt alert")
-
-
+    it("Should verify prompt alert", async () => {
+        const tabPromptAlert = await $("//a[contains(text(), 'Alert with Textbox ')]");
+    await tabPromptAlert.click();
+    const button = await $("button.btn-info");
+    // klika przycisk wywołując confirm alert z OK i Cancel
+    await button.click();
+    await browser.sendAlertText("Grzegorz");
+    await browser.acceptAlert();
+    const p = await $("#demo1");
+    await expect(await p.getText()).toContain("Grzegorz");
+    })
 })
 
 
