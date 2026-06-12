@@ -60,11 +60,11 @@ describe("Lesson 5  - Alerts", async() => {
 
 it("Should verify confirm alert", async () => {
     // znajduje zakładkę "Alert with OK & Cancel" używając XPath po tekście
-    const tabConfigAlert: WebdriverIO.Element = await $("//a[contains(text(), 'Alert with OK & Cancel')]");
+    const tabConfigAlert = $("//a[contains(text(), 'Alert with OK & Cancel')]");
     // klika zakładkę żeby przejść do sekcji z confirm alertem
     await tabConfigAlert.click();
     // znajduje przycisk który wywołuje confirm alert
-    const button: WebdriverIO.Element = await $("button.btn-primary");
+    const button = $("button.btn-primary");
     // klika przycisk wywołując confirm alert z OK i Cancel
     await button.click();
     // klika Cancel w confirm alercie (odrzuca)
@@ -72,24 +72,31 @@ it("Should verify confirm alert", async () => {
     // znajduje element #demo który pokazuje wynik kliknięcia
     const p = await $("#demo")
     // pobiera tekst z elementu #demo
-    const validationMessage:string = await p.getText();
+    const validationMessage: string = await p.getText();
     // wypisuje komunikat w konsoli
-    console.log(await validationMessage)
+    console.log(validationMessage);
     // sprawdza czy tekst zawiera "You Pressed Cancel"
-    await expect(await validationMessage).toContain("You Pressed Cancel")
+    expect(validationMessage).toContain("You Pressed Cancel")
 });
    
 
     it("Should verify prompt alert", async () => {
+        // znajduje zakładkę "Alert with Textbox" używając XPath po tekście
         const tabPromptAlert = await $("//a[contains(text(), 'Alert with Textbox ')]");
-    await tabPromptAlert.click();
-    const button = await $("button.btn-info");
-    // klika przycisk wywołując confirm alert z OK i Cancel
-    await button.click();
-    await browser.sendAlertText("Grzegorz");
-    await browser.acceptAlert();
-    const p = await $("#demo1");
-    await expect(await p.getText()).toContain("Grzegorz");
+        // klika zakładkę żeby przejść do sekcji z prompt alertem
+        await tabPromptAlert.click();
+        // znajduje przycisk który otwiera prompt alert (pole tekstowe)
+        const button = await $("button.btn-info");
+        // klika przycisk wywołując prompt alert z polem do wpisania tekstu
+        await button.click();
+        // wpisuje tekst "Grzegorz" do pola w prompt alercie
+        await browser.sendAlertText("Grzegorz");
+        // klika OK akceptując prompt i potwierdzając wpisany tekst
+        await browser.acceptAlert();
+        // znajduje element #demo1 który wyświetla wynik po zamknięciu promptu
+        const p = await $("#demo1");
+        // sprawdza czy wyświetlony tekst zawiera wpisaną nazwę "Grzegorz"
+        await expect(await p.getText()).toContain("Grzegorz");
     })
 })
 
