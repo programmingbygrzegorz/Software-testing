@@ -52,7 +52,10 @@ export const config: WebdriverIO.Config = {
         ],
         lekcja6 : [
             "./src/spec/e2e/fileUpload.ts"
-        ],    
+        ],   
+         lekcja7 : [
+            "./src/spec/e2e/moveto.ts"
+        ],   
     },
     // Patterns to exclude.
     exclude: [
