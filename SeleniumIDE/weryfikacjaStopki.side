@@ -1,0 +1,113 @@
+{
+  "id": "05cbd56d-e268-4ada-b69a-c49b9dabf709",
+  "version": "2.0",
+  "name": "Katalon-demo-cura",
+  "url": "https://katalon-demo-cura.herokuapp.com/",
+  "tests": [{
+    "id": "7451e9cd-89cc-4823-87f0-23874b15ad42",
+    "name": "Weryfikacja stopki",
+    "commands": [{
+      "id": "075a3bdc-5933-40a0-a7c6-950b3861837c",
+      "comment": "",
+      "command": "open",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "bd341ad5-0991-48b9-9455-7e5a56ea3441",
+      "comment": "",
+      "command": "click",
+      "target": "css=p:nth-child(2)",
+      "targets": [
+        ["css=p:nth-child(2)", "css:finder"],
+        ["xpath=//p", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9a043243-2134-452b-924e-d318dd66acc0",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=.list-unstyled > li:nth-child(1)",
+      "targets": [
+        ["css=.list-unstyled > li:nth-child(1)", "css:finder"],
+        ["xpath=//div/ul/li", "xpath:position"],
+        ["xpath=//li[contains(.,' (678) 813-1KMS')]", "xpath:innerText"]
+      ],
+      "value": "(678) 813-1KMS"
+    }, {
+      "id": "8880650b-6ae5-43bd-bd0e-04c6f39955e2",
+      "comment": "",
+      "command": "verifyText",
+      "target": "linkText=info@katalon.com",
+      "targets": [
+        ["linkText=info@katalon.com", "linkText"],
+        ["css=li > a:nth-child(2)", "css:finder"],
+        ["xpath=//a[contains(text(),'info@katalon.com')]", "xpath:link"],
+        ["xpath=//a[contains(@href, 'mailto:info@katalon.com')]", "xpath:href"],
+        ["xpath=//div/ul/li[2]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'info@katalon.com')]", "xpath:innerText"]
+      ],
+      "value": "info@katalon.com"
+    }, {
+      "id": "fb1a1074-49d9-4228-adb2-d036b5dd6ba6",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=.fa-phone",
+      "targets": [
+        ["css=.fa-phone", "css:finder"],
+        ["xpath=//li/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "29376ae7-f4f0-4ac7-a2f7-1925fb18ec4d",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=.fa-envelope-o",
+      "targets": [
+        ["css=.fa-envelope-o", "css:finder"],
+        ["xpath=//li[2]/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "956f4cc2-6758-4dcd-9f82-9142b9c57aaa",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=.fa-facebook",
+      "targets": [
+        ["css=.fa-facebook", "css:finder"],
+        ["xpath=//li/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "51d7c513-1a55-4e77-b52f-3d1110eec918",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=.fa-twitter",
+      "targets": [
+        ["css=.fa-twitter", "css:finder"],
+        ["xpath=//li[2]/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8024171d-199c-4c6c-8a7b-caaedf5b985e",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "css=.fa-dribbble",
+      "targets": [
+        ["css=.fa-dribbble", "css:finder"],
+        ["xpath=//li[3]/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "bf5e5cba-4cc9-4b96-99a1-b54cf0990001",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["7451e9cd-89cc-4823-87f0-23874b15ad42"]
+  }],
+  "urls": ["https://katalon-demo-cura.herokuapp.com/"],
+  "plugins": []
+}

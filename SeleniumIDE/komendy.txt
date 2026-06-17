@@ -1,0 +1,2 @@
+selenium-side-runner -c "browserName=chrome" "C:\Projekty\Testowanie oprogramowania\SeleniumIDE\weryfikacjaStopki.side" - otwiera z gui 
+selenium-side-runner -c "goog:chromeOptions.args=[disable-infobars, headless]" "C:\Projekty\Testowanie oprogramowania\SeleniumIDE\weryfikacjaStopki.side"  otwiera w trybie Headless
