@@ -1,0 +1,21 @@
+{
+  "name": "appium",
+  "version": "1.0.0",
+  "description": "Automated testing in Appium",
+  "keywords": [
+    "appium",
+    "android",
+    "automation",
+    "testing"
+  ],
+  "license": "ISC",
+  "author": "Grzegorz Starzynski",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "appium": "^3.5.1"
+  }
+}
