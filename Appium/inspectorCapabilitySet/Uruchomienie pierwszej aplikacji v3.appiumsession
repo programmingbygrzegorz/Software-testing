@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "name": "Uruchomienie pierwszej aplikacji v3",
+  "server": {
+    "remote": {
+      "port": "4723",
+      "host": "192.168.56.1",
+      "hostname": "192.168.56.1"
+    },
+    "advanced": {}
+  },
+  "caps": [
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "platformName",
+      "value": "Android"
+    },
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "appium:deviceName",
+      "value": "ZY22MDTQZ2"
+    },
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "appium:platformVersion",
+      "value": "16"
+    },
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "appium:automationName",
+      "value": "UIAutomator2"
+    },
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "appium:appPackage",
+      "value": "com.android.chrome"
+    },
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "appium:appActivity",
+      "value": "com.google.android.apps.chrome.Main"
+    },
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "appium:appActivity",
+      "value": "com.google.android.apps.chrome.Main"
+    },
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "appium:noReset",
+      "value": "true"
+    },
+    {
+      "enabled": true,
+      "type": "text",
+      "name": "appium:uiautomator2ServerInstallTimeout",
+      "value": "60000"
+    }
+  ]
+}
