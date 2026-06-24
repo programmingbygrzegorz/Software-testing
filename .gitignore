@@ -8,3 +8,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# JMeter - śledzimy tylko gotowe przykłady testów, resztę instalacji JMeter ignorujemy
+/Jmeter/*
+!/Jmeter/Wykonane przyklady/
