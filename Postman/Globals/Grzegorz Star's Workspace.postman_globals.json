@@ -1,0 +1,33 @@
+{
+	"id": "9001161f-4808-4851-8e6e-ea82b5e4f154",
+	"values": [
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "baseUrlPlaceHolder",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "postTitle",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "imie",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"name": "Grzegorz Star's Workspace Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2026-06-24T10:24:43.390Z",
+	"_postman_exported_using": "Postman/12.16.2-260624-0232"
+}
