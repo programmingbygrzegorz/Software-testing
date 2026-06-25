@@ -5,6 +5,8 @@
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
         <collectionProp name="Arguments.arguments"/>
       </elementProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     </TestPlan>
     <hashTree>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Symulacja rzywistego używkownika ">
@@ -25,6 +27,16 @@
               <stringProp name="Argument.value">jsonplaceholder.typicode.com</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="titlePost" elementType="Argument">
+              <stringProp name="Argument.name">titlePost</stringProp>
+              <stringProp name="Argument.value">Przykładowy wpis na bloga</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
+            <elementProp name="bodyPost" elementType="Argument">
+              <stringProp name="Argument.name">bodyPost</stringProp>
+              <stringProp name="Argument.value">Przykładowa treść posta</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
           </collectionProp>
         </Arguments>
         <hashTree/>
@@ -41,8 +53,8 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
- &quot;title&quot;: &quot;foo&quot;,&#xd;
- &quot;body&quot;: &quot;bar&quot;,&#xd;
+ &quot;title&quot;: &quot;${titlePost}&quot;,&#xd;
+ &quot;body&quot;: &quot;${bodyPost}&quot;,&#xd;
  &quot;userId&quot;: 1&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
@@ -140,7 +152,7 @@
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Weryfikacja title ">
             <stringProp name="JSON_PATH">$.title</stringProp>
-            <stringProp name="EXPECTED_VALUE">foo</stringProp>
+            <stringProp name="EXPECTED_VALUE">Przykładowy wpis na bloga</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
