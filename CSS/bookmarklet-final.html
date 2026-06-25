@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Edytor kolorów – bookmarklet</title>
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #222; }
+    h1 { font-size: 22px; }
+    .step { margin: 20px 0; padding: 16px; background: #f5f5f5; border-radius: 8px; }
+    .step strong { display: block; margin-bottom: 6px; font-size: 15px; }
+    a.bookmarklet {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #1a73e8;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+    code { background: #eee; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+    pre {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: auto;
+    }
+    .comment { color: #6a9955; }
+    .keyword { color: #569cd6; }
+    .string  { color: #ce9178; }
+  </style>
+</head>
+<body>
+
+<h1>🎨 Edytor kolorów – bookmarklet</h1>
+<p>Narzędzie do zmiany kolorów znaczników HTML na dowolnej stronie internetowej. Działa bez instalacji – wystarczy przeciągnąć przycisk do paska zakładek.</p>
+
+<div class="step">
+  <strong>Krok 1 – Przeciągnij przycisk do paska zakładek przeglądarki:</strong>
+  Jeśli pasek zakładek nie jest widoczny, włącz go skrótem <code>Ctrl + Shift + B</code>
+  <br><br>
+  <a class="bookmarklet" href="javascript:(function(){const existing=document.getElementById('__colorPanel');if(existing){existing.remove();return;}const tagi=[{label:'DIV',selektor:'div'},{label:'Nagłówki H1',selektor:'h1'},{label:'Nagłówki H2',selektor:'h2'},{label:'Nagłówki H3',selektor:'h3'},{label:'Akapity P',selektor:'p'},{label:'Linki A',selektor:'a'},{label:'Listy LI',selektor:'li'},{label:'Span',selektor:'span'}];const panel=document.createElement('div');panel.id='__colorPanel';panel.style.cssText='position:fixed;top:20px;right:20px;z-index:2147483647;background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px;width:260px;font-family:sans-serif;font-size:14px;box-shadow:0 4px 20px rgba(0,0,0,0.15);';panel.innerHTML='<div style=&quot;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;&quot;><strong style=&quot;font-size:15px;&quot;>🎨 Edytor kolorów</strong><button id=&quot;__closePanel&quot; style=&quot;background:none;border:none;font-size:18px;cursor:pointer;color:#666;&quot;>✕</button></div>';function rgbToHex(rgb){const result=rgb.match(/\d+/g);if(!result||result.length<3)return'#000000';return'#'+result.slice(0,3).map(n=>parseInt(n).toString(16).padStart(2,'0')).join('');}tagi.forEach(({label,selektor})=>{const row=document.createElement('div');row.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;';const lbl=document.createElement('label');lbl.textContent=label;lbl.style.flex='1';const input=document.createElement('input');input.type='color';input.style.cssText='width:40px;height:28px;border:none;cursor:pointer;border-radius:4px;';const first=document.querySelector(selektor);if(first){const computed=window.getComputedStyle(first).color;input.value=rgbToHex(computed);}input.addEventListener('input',()=>{document.querySelectorAll(selektor).forEach(el=>{el.style.color=input.value;});});row.appendChild(lbl);row.appendChild(input);panel.appendChild(row);});const resetBtn=document.createElement('button');resetBtn.textContent='↺ Przywróć oryginał';resetBtn.style.cssText='margin-top:10px;width:100%;padding:7px;background:#f44336;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;';resetBtn.addEventListener('click',()=>{tagi.forEach(({selektor})=>{document.querySelectorAll(selektor).forEach(el=>{el.style.color='';});});});panel.appendChild(resetBtn);document.body.appendChild(panel);document.getElementById('__closePanel').addEventListener('click',()=>panel.remove());})();">🎨 Edytor kolorów</a>
+</div>
+
+<div class="step">
+  <strong>Krok 2 – Wejdź na dowolną stronę (np. onet.pl)</strong>
+  Kliknij zakładkę <code>🎨 Edytor kolorów</code> w pasku przeglądarki. Panel pojawi się w prawym górnym rogu strony.
+</div>
+
+<div class="step">
+  <strong>Krok 3 – Zmieniaj kolory</strong>
+  Kliknij kwadracik koloru obok wybranego znacznika. Na Onecie używaj głównie <strong>DIV</strong> – tam jest większość treści.<br><br>
+  Przycisk <strong>↺ Przywróć oryginał</strong> cofa wszystkie zmiany.<br>
+  Ponowne kliknięcie zakładki chowa panel.
+</div>
+
+<hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+
+<h2 style="font-size: 18px;">📄 Kod źródłowy z komentarzami</h2>
+<p>Poniżej pełny kod skryptu z objaśnieniami jak działa każda część:</p>
+
+<pre>
+<span class="comment">// ============================================================
+// EDYTOR KOLORÓW – bookmarklet
+// Skrypt wstrzykuje panel do dowolnej strony internetowej,
+// który pozwala zmieniać kolory podstawowych znaczników HTML.
+// ============================================================</span>
+
+(<span class="keyword">function</span> () {
+
+  <span class="comment">// ----------------------------------------------------------
+  // TOGGLE – jeśli panel już istnieje, usuń go i zakończ.
+  // Dzięki temu ponowne kliknięcie zakładki chowa panel
+  // zamiast tworzyć kolejny.
+  // ----------------------------------------------------------</span>
+  <span class="keyword">const</span> existing = document.getElementById(<span class="string">'__colorPanel'</span>);
+  <span class="keyword">if</span> (existing) {
+    existing.remove();
+    <span class="keyword">return</span>;
+  }
+
+  <span class="comment">// ----------------------------------------------------------
+  // LISTA ZNACZNIKÓW DO EDYCJI
+  // Każdy obiekt zawiera:
+  //   label    – nazwa wyświetlana w panelu
+  //   selektor – selektor CSS używany przez querySelector
+  // ----------------------------------------------------------</span>
+  <span class="keyword">const</span> tagi = [
+    { label: <span class="string">'DIV'</span>,         selektor: <span class="string">'div'</span>  },
+    { label: <span class="string">'Nagłówki H1'</span>,  selektor: <span class="string">'h1'</span>   },
+    { label: <span class="string">'Nagłówki H2'</span>,  selektor: <span class="string">'h2'</span>   },
+    { label: <span class="string">'Nagłówki H3'</span>,  selektor: <span class="string">'h3'</span>   },
+    { label: <span class="string">'Akapity P'</span>,    selektor: <span class="string">'p'</span>    },
+    { label: <span class="string">'Linki A'</span>,      selektor: <span class="string">'a'</span>    },
+    { label: <span class="string">'Listy LI'</span>,     selektor: <span class="string">'li'</span>   },
+    { label: <span class="string">'Span'</span>,         selektor: <span class="string">'span'</span> },
+  ];
+
+  <span class="comment">// ----------------------------------------------------------
+  // TWORZENIE PANELU
+  // Tworzymy nowy element div i ustawiamy mu style przez cssText.
+  // position: fixed – panel przyklejony do rogu ekranu.
+  // z-index: 2147483647 – maksymalna wartość, zawsze na wierzchu.
+  // ----------------------------------------------------------</span>
+  <span class="keyword">const</span> panel = document.createElement(<span class="string">'div'</span>);
+  panel.id = <span class="string">'__colorPanel'</span>;
+  panel.style.cssText = <span class="string">`
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2147483647;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 16px;
+    width: 260px;
+    font-family: sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  `</span>;
+
+  <span class="comment">// Nagłówek panelu z tytułem i przyciskiem zamknięcia (✕)</span>
+  panel.innerHTML = <span class="string">`
+    &lt;div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;"&gt;
+      &lt;strong style="font-size:15px;"&gt;🎨 Edytor kolorów&lt;/strong&gt;
+      &lt;button id="__closePanel" style="background:none;border:none;font-size:18px;cursor:pointer;color:#666;"&gt;✕&lt;/button&gt;
+    &lt;/div&gt;
+  `</span>;
+
+  <span class="comment">// ----------------------------------------------------------
+  // HELPER: rgbToHex()
+  // Przeglądarka zwraca kolory w formacie: rgb(255, 0, 0)
+  // Color picker wymaga formatu: #ff0000
+  // Funkcja wyciąga liczby z rgb() i zamienia je na hex.
+  // ----------------------------------------------------------</span>
+  <span class="keyword">function</span> rgbToHex(rgb) {
+    <span class="keyword">const</span> result = rgb.match(<span class="string">/\d+/g</span>);
+    <span class="keyword">if</span> (!result || result.length &lt; 3) <span class="keyword">return</span> <span class="string">'#000000'</span>;
+    <span class="keyword">return</span> <span class="string">'#'</span> + result.slice(0, 3)
+      .map(n =&gt; parseInt(n).toString(16).padStart(2, <span class="string">'0'</span>))
+      .join(<span class="string">''</span>);
+  }
+
+  <span class="comment">// ----------------------------------------------------------
+  // GENEROWANIE WIERSZY DLA KAŻDEGO ZNACZNIKA
+  // forEach() iteruje po tablicy tagi[].
+  // Dla każdego znacznika tworzy wiersz z etykietą i pickerem.
+  // getComputedStyle() pobiera aktualny kolor elementu ze strony
+  // i ustawia go jako wartość startową pickera.
+  // addEventListener('input') reaguje na każdą zmianę koloru
+  // i natychmiast aktualizuje wszystkie pasujące elementy.
+  // ----------------------------------------------------------</span>
+  tagi.forEach(({ label, selektor }) =&gt; {
+
+    <span class="keyword">const</span> row = document.createElement(<span class="string">'div'</span>);
+    row.style.cssText = <span class="string">'display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;'</span>;
+
+    <span class="keyword">const</span> lbl = document.createElement(<span class="string">'label'</span>);
+    lbl.textContent = label;
+    lbl.style.flex = <span class="string">'1'</span>;
+
+    <span class="keyword">const</span> input = document.createElement(<span class="string">'input'</span>);
+    input.type = <span class="string">'color'</span>;
+    input.style.cssText = <span class="string">'width:40px; height:28px; border:none; cursor:pointer; border-radius:4px;'</span>;
+
+    <span class="comment">// Pobierz aktualny kolor pierwszego elementu na stronie</span>
+    <span class="keyword">const</span> first = document.querySelector(selektor);
+    <span class="keyword">if</span> (first) {
+      <span class="keyword">const</span> computed = window.getComputedStyle(first).color;
+      input.value = rgbToHex(computed);
+    }
+
+    <span class="comment">// Zmiana koloru w pickerze → aktualizuj wszystkie elementy</span>
+    input.addEventListener(<span class="string">'input'</span>, () =&gt; {
+      document.querySelectorAll(selektor).forEach(el =&gt; {
+        el.style.color = input.value;
+      });
+    });
+
+    row.appendChild(lbl);
+    row.appendChild(input);
+    panel.appendChild(row);
+  });
+
+  <span class="comment">// ----------------------------------------------------------
+  // PRZYCISK RESET
+  // Usuwa nadpisany kolor (style.color = '') ze wszystkich
+  // elementów, co przywraca oryginalne style z CSS strony.
+  // ----------------------------------------------------------</span>
+  <span class="keyword">const</span> resetBtn = document.createElement(<span class="string">'button'</span>);
+  resetBtn.textContent = <span class="string">'↺ Przywróć oryginał'</span>;
+  resetBtn.style.cssText = <span class="string">'margin-top:10px;width:100%;padding:7px;background:#f44336;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:13px;'</span>;
+  resetBtn.addEventListener(<span class="string">'click'</span>, () =&gt; {
+    tagi.forEach(({ selektor }) =&gt; {
+      document.querySelectorAll(selektor).forEach(el =&gt; {
+        el.style.color = <span class="string">''</span>;
+      });
+    });
+  });
+  panel.appendChild(resetBtn);
+
+  <span class="comment">// ----------------------------------------------------------
+  // WSTRZYKNIĘCIE PANELU DO STRONY
+  // appendChild() dodaje panel jako ostatni element w body –
+  // pojawia się na stronie bez przeładowania.
+  // ----------------------------------------------------------</span>
+  document.body.appendChild(panel);
+
+  <span class="comment">// Obsługa przycisku zamknięcia ✕</span>
+  document.getElementById(<span class="string">'__closePanel'</span>).addEventListener(<span class="string">'click'</span>, () =&gt; {
+    panel.remove();
+  });
+
+})();
+<span class="comment">// Całość opakowana w IIFE (Immediately Invoked Function Expression)
+// – funkcja wywołuje się natychmiast po wczytaniu.
+// Zmienne nie trafiają do globalnego scope strony
+// i nie kolidują z jej własnym kodem JavaScript.</span>
+</pre>
+
+<p style="color:#888; font-size:13px; margin-top:30px;">Zmiany są tymczasowe – po odświeżeniu strony wróci oryginał.</p>
+
+</body>
+</html>
