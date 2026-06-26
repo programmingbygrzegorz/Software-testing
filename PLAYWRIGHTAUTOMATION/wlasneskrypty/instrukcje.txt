@@ -1,0 +1,23 @@
+Instrukcje uruchamiania własnych skryptów (PLAYWRIGHTAUTOMATION/wlasneskrypty)
+================================================================================
+
+Uwaga ogólna: wszystkie poniższe komendy odpalaj z katalogu PLAYWRIGHTAUTOMATION
+(tam jest zainstalowany node_modules z paczką "playwright"), np.:
+
+    cd PLAYWRIGHTAUTOMATION
+
+--------------------------------------------------------------------------------
+checkhover.js
+--------------------------------------------------------------------------------
+Co robi:
+    Otwiera lokalny plik CSS/index.html w przeglądarce (headless), najeżdża
+    kursorem (hover) na przycisk #buy-ticket i sprawdza w konsoli czy
+    addeventlistener.js poprawnie reaguje na zdarzenie "mouseover".
+
+Jak odpalić:
+    node wlasneskrypty/checkhover.js
+
+Co powinno się pojawić:
+    Button count: 1
+    Button visible: true
+    CONSOLE: ZADZIAŁO SIĘ
