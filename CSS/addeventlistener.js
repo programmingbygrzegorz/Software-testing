@@ -76,3 +76,33 @@ link.addEventListener("click", event =>{
     event.preventDefault();
 
 })
+
+// Przykład 7. Keydown i Keyup — zdarzenia klawiatury na polu formularza
+// inputName - pole tekstowe "Name" w formularzu kontaktowym
+const inputName = document.querySelector('input[name="Name"]')
+
+// keydown odpala się w momencie WCIŚNIĘCIA klawisza (przed pojawieniem się znaku w polu)
+// callback musi przyjąć parametr "e" (event), inaczej "e" jest niezdefiniowane i wywołanie rzuci błąd
+inputName.addEventListener("keydown", (e) => {
+   // console.log("Uruchomiono zdarzenie keydown")
+   console.log(e.key)     // e.key - nazwa/znak wciśniętego klawisza, np. "a", "Enter", "Backspace"
+})
+
+// keyup odpala się w momencie PUSZCZENIA klawisza (po keydown)
+inputName.addEventListener("keyup", () => {
+    console.log("Uruchomiono zdarzenie keyup")
+    })
+
+// Przykład 8. Scroll — wykrywanie przewijania strony
+window.addEventListener("scroll", () => {
+//console.log("Skroll")
+console.log(window.scrollY)   // window.scrollY - liczba pikseli o jaką strona jest przewinięta w pionie
+                                // (window.screenY to coś innego — pozycja okna przeglądarki na ekranie, nie scroll)
+})
+// Przykład 9. DOMContentLoaded — zdarzenie wykonania kodu po wczytaniu się w pełni DOM
+// odpala się gdy cała struktura HTML jest już sparsowana (przed wczytaniem obrazków/CSS z sieci)
+// — bezpieczne miejsce na kod, który musi mieć dostęp do wszystkich elementów strony
+window.addEventListener("DOMContentLoaded", () =>{
+    console.log("Dom wczytał się poprawnie!")   // console.log() przyjmuje argumenty w (), nie w {}
+
+})
