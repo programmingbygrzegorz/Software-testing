@@ -39,13 +39,40 @@ p.addEventListener("click", e => {  // e = obiekt zdarzenia (event object)
     }
 })
 
+// Przykład 4. Para zdarzeń mouseover/mouseout — wykrywanie wjazdu i zjazdu kursora z elementu
+// mouseover odpala się gdy kursor WJEDZIE na przycisk "Buy Tickets" (New York)
 buyTicketBtn.addEventListener("mouseover", () => {
     console.log("ZADZIAŁO SIĘ!")
     })
+// mouseout odpala się gdy kursor ZJEDZIE z przycisku
 buyTicketBtn.addEventListener("mouseout", () => {
     console.log("ZADZIAŁO SIĘ - #2!")
     })
-/* JESLI CHCEMY EVENT WYWOŁYWAĆ w console.log
+/* JESLI CHCEMY EVENT WYWOŁYWAĆ w console.log DO WŁAŚCIWOŚCI MOŻNA ODWOŁAĆ
 buyTicketBtn.addEventListener("mouseout", () e => {
     console.log(e)
     })*/
+
+// Przykład 5. preventDefault() — blokowanie domyślnej akcji przeglądarki
+// formContact - formularz kontaktowy (sekcja CONTACT na dole strony)
+const formContact = document.querySelector("form");
+
+formContact.addEventListener("submit", e => {
+    // domyślnie wysłanie formularza przeładowałoby/przekierowałoby stronę (action="/action_page.php")
+    // preventDefault() zatrzymuje tę domyślną akcję — przydatne np. gdy chcemy
+    // najpierw zwalidować dane w JS, zanim formularz faktycznie zostanie wysłany
+    e.preventDefault();
+    console.log("Test");
+})
+
+
+// Przykład 6. preventDefault() na linku nawigacyjnym — blokuje domyślny skok do #contact
+// selektor atrybutowy [href="#contact"] zawężony do linku w głównym pasku nawigacji (div.w3-top div.w3-bar)
+// — na stronie jest kilka linków z href="#contact", więc trzeba wskazać dokładnie ten jeden
+const link = document.querySelector('div.w3-top div.w3-bar a[href="#contact"]')
+link.addEventListener("click", event =>{
+    // bez preventDefault() kliknięcie normalnie przewinęłoby stronę do sekcji #contact
+    // tutaj blokujemy ten domyślny skok (np. żeby obsłużyć nawigację własnym kodem JS)
+    event.preventDefault();
+
+})
