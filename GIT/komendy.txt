@@ -1,0 +1,13 @@
+git init
+git branch test1  - tworzy nowego brancha
+git branch -M main - przejście na branch main
+git commit -m "Co trzeba wpisać "
+git add . dodaj wszystkie pliki
+git remote add //adres wpisujemy 
+git push -u origin test1 //wgrywa na brancha test1
+git checkout test1  zmienia bracnch
+git pull orygin main 
+git status co zmieniło się 
+git log co się zmieniło 
+git checkout wklejmy_commit -  na którym bedziemy pracować 
+git fetch - pobierz wszystkie branche które zostały stworzone 
