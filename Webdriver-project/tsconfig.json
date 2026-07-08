@@ -30,6 +30,7 @@
     "include": [
         //"test",
         "./src/spec/**/*.ts",
-        "./wdio.conf.ts"
+        "./wdio.conf.ts",
+        "./src/pages/**/*.ts"
     ]
 }

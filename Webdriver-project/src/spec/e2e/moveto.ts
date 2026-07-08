@@ -1,14 +1,23 @@
-import { homeUrl2 } from "../../lib/pages";
+//korzystamy z klasy HomePage zamiast bezpośredniego użycia browser.url() i expect(browser).toHaveUrl()
+//import { homeUrl2 } from "../../lib/pages";
 
+import HomePage from "../../pages/homePage";
 
 describe("Lesson 7 - Moveto, MoveIntoView", async () => {
 
     // TEST 1 - otwiera stronę sklepu PrestaShop i weryfikuje URL
     it("Should open automation practice page and verify url", async () => {
         // nawiguje do strony głównej sklepu PrestaShop
-        await browser.url(homeUrl2);
+        
+        //zamieniamy na wywołanie metody z klasy HomePage zamiast bezpośredniego użycia browser.url()
+        //await browser.url(homeUrl2);
+        
         // asercja: sprawdza czy przeglądarka jest na właściwym URL
-        await expect(browser).toHaveUrl(homeUrl2);
+        //zamieniamy na wywołanie metody z klasy HomePage zamiast bezpośredniego użycia expect(browser).toHaveUrl()
+        //await expect(browser).toHaveUrl(homeUrl2);
+
+        // użycie metody z klasy HomePage zamiast bezpośredniego użycia browser.url() i expect(browser).toHaveUrl()
+        await HomePage.openHomePage2();
 
         // popup newslettera pojawia się z opóźnieniem po załadowaniu strony
         // try/catch: jeśli popup nie pojawi się w ciągu 5s, test przechodzi dalej

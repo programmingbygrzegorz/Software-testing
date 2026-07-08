@@ -14,7 +14,8 @@
     "lekcja4": "wdio run wdio.conf.ts --suite lekcja4",
     "lekcja5": "wdio run wdio.conf.ts --suite lekcja5",
     "lekcja6": "wdio run wdio.conf.ts --suite lekcja6",
-     "lekcja7": "wdio run wdio.conf.ts --suite lekcja7"
+     "lekcja7": "wdio run wdio.conf.ts --suite lekcja7",
+     "lekcja8": "wdio run wdio.conf.ts --suite lekcja8"
 
   },
   "keywords": [
