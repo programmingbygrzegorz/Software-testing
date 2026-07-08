@@ -1,0 +1,29 @@
+Inicjalizacja projektu
+1. npm init
+// instlacja webdrivera
+2. npm install - save-dev @wdio/cli
+Konfigurator Webdrivera
+3. npx wdio config
+
+4. Utworzenie test\specs\e2e
+test\pages
+test\config
+5. W tsconfig.json 
+dodajemy 
+"allowJs": true,
+w sekcji include 
+"./test/specs/**/*.ts",
+ "./wdio.conf.ts",
+ "./test/pages/**/*.ts".
+ "./test/pages/*.ts""
+6.W wdio.conf.ts
+Zmiana instacji na z 10 na 1
+
+specs: [
+
+        './test/specs/**/*.ts' //to dodałem
+        // ToDo: define location for spec files here
+    ],
+
+logLevel: 'error', //zmina z info na error
+services: ['chromedriver', 'devtools'],
