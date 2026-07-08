@@ -1,3 +1,8 @@
+# Skrypt zawiera podstawowe testy automatyczne strony Onet.pl napisane w Selenium + pytest.
+# Sprawdza czy strona się ładuje (tytuł zawiera "Onet") oraz czy element <header> jest obecny w DOM.
+# Każdy test dostaje własną instancję przeglądarki Chrome poprzez fixture "driver",
+# który automatycznie otwiera przeglądarkę przed testem i zamyka ją po jego zakończeniu.
+
 # Import biblioteki pytest - frameworka do pisania i uruchamiania testów w Pythonie
 import pytest
 

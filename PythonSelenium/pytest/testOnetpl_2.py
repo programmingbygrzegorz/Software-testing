@@ -1,11 +1,28 @@
+# Skrypt zawiera rozszerzone testy automatyczne strony Onet.pl napisane w Selenium + pytest.
+# W porównaniu do testOnetpl_1.py, używa bardziej zaawansowanych technik:
+#   - WebDriverWait zamiast statycznych opóźnień (czeka aż element będzie dostępny, max N sekund)
+#   - obsługi baneru cookies (RODO), który blokuje interakcję ze stroną
+#   - grupowania testów w klasę (TestOnetSearch)
+#   - parametryzacji testów (@pytest.mark.parametrize) - jeden test uruchamiany z różnymi danymi
+# Testy sprawdzają: ładowanie strony, widoczność menu, obecność header/footer oraz liczbę linków.
+
+# --- Importy ---
 import pytest
+# webdriver - główna klasa do sterowania przeglądarką
 from selenium import webdriver
+# By - definiuje sposób wyszukiwania elementów (CSS, TAG_NAME, ID itp.)
 from selenium.webdriver.common.by import By
+# Keys - symulacja klawiszy klawiatury (np. Enter, Tab)
 from selenium.webdriver.common.keys import Keys
+# WebDriverWait - czeka na element przez określony czas zamiast używać sleep()
 from selenium.webdriver.support.ui import WebDriverWait
+# EC (expected_conditions) - gotowe warunki czekania, np. "element jest klikalny"
 from selenium.webdriver.support import expected_conditions as EC
 
 
+# --- Fixture: przygotowanie i sprzątanie przeglądarki ---
+# Fixture to funkcja, którą pytest automatycznie wywołuje przed każdym testem.
+# Dzięki "yield" przeglądarka jest otwierana PRZED testem i zamykana PO teście.
 @pytest.fixture
 def driver():
     # Przygotowanie przeglądarki przed każdym testem
@@ -15,6 +32,9 @@ def driver():
     drv.quit()
 
 
+# --- Funkcja pomocnicza: obsługa baneru cookies ---
+# Nie jest testem - służy jako wspólna logika wywoływana na początku każdego testu.
+# Baner RODO pojawia się przy pierwszym wejściu na stronę i zasłania inne elementy.
 def accept_cookies_if_present(driver):
     """
     Funkcja pomocnicza - próbuje zaakceptować baner cookies, jeśli się pojawi.
@@ -32,6 +52,9 @@ def accept_cookies_if_present(driver):
         pass
 
 
+# --- Klasa z testami ---
+# Grupowanie testów w klasę pozwala logicznie je powiązać i uruchamiać razem.
+# pytest automatycznie rozpoznaje metody zaczynające się od "test_" jako testy.
 class TestOnetSearch:
     """
     Grupa testów dotyczących wyszukiwarki na Onet.pl.
@@ -43,6 +66,7 @@ class TestOnetSearch:
         driver.get("https://www.onet.pl")
         accept_cookies_if_present(driver)
 
+        # Weryfikacja tytułu karty przeglądarki oraz adresu URL
         assert "Onet" in driver.title
         assert driver.current_url.startswith("https://www.onet.pl")
 
@@ -53,10 +77,13 @@ class TestOnetSearch:
 
         wait = WebDriverWait(driver, 10)
         # Szukamy elementu, którego klasa CSS zawiera słowo "Menu" (wielka litera - onet tak nazywa swoje klasy)
+        # visibility_of_element_located czeka aż element będzie widoczny (nie tylko obecny w DOM)
         nav = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "[class*='Menu']")))
 
         assert nav.is_displayed()
 
+    # @pytest.mark.parametrize uruchamia ten sam test wielokrotnie z różnymi wartościami.
+    # Poniżej test wykona się 2 razy: raz dla "header", raz dla "footer".
     @pytest.mark.parametrize("expected_element_tag", ["header", "footer"])
     def test_key_structural_elements_present(self, driver, expected_element_tag):
         """
@@ -68,6 +95,7 @@ class TestOnetSearch:
         accept_cookies_if_present(driver)
 
         wait = WebDriverWait(driver, 10)
+        # presence_of_element_located czeka aż element pojawi się w DOM (niekoniecznie widoczny)
         element = wait.until(
             EC.presence_of_element_located((By.TAG_NAME, expected_element_tag))
         )
@@ -92,8 +120,10 @@ class TestOnetSearch:
         accept_cookies_if_present(driver)
 
         wait = WebDriverWait(driver, 10)
+        # Czekamy aż przynajmniej jeden link pojawi się na stronie
         wait.until(EC.presence_of_element_located((By.TAG_NAME, "a")))
 
+        # find_elements (liczba mnoga) zwraca LISTĘ wszystkich pasujących elementów
         links = driver.find_elements(By.TAG_NAME, "a")
 
         # Sprawdzamy, że strona główna ma więcej niż np. 10 linków
