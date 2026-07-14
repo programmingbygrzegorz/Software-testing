@@ -14,44 +14,78 @@ import SearchResultPage from "../../pages/SearchResultPage";
 
 describe ("E2E Searchbar", () => {
 
-    // TEST 1: otwiera stronę główną Helion i sprawdza, czy searchbar jest na niej widoczny
-    it("Should open helio home page and verify ul and visible searchbar", async () => {
-        // otwiera stronę główną Helion i sprawdza, czy przeglądarka faktycznie na niej wylądowała
+    // ============================================================================
+    // TEST 1 - punkt wyjścia dla całego scenariusza: wchodzimy na stronę główną
+    // Helion i upewniamy się, że pasek wyszukiwania w ogóle jest widoczny, zanim
+    // w kolejnych testach zaczniemy w nim cokolwiek robić.
+    // ============================================================================
+    it("Should open Helion home page and display a visible search bar", async () => {
+        // krok 1: nawiguje pod helionHomeUrl i sprawdza, że przeglądarka faktycznie tam wylądowała
         await GlobalPage.openPage(helionHomeUrl, helionHomeUrl);
-        // sprawdza, że pole wyszukiwania jest widoczne na stronie
+        // krok 2: sprawdza, że pole wyszukiwania (#header-search-text) jest widoczne na stronie
         await SearchBarPage.searchBarIsVisible();
     });
 
-    // TEST 2: klika w ikonę wyszukiwania (bez wpisanej frazy) i sprawdza, że URL się nie zmienił
-    // (pole jest wymagane - przeglądarka blokuje wysłanie pustego formularza)
-    it("Should click search icon and verify url", async () => {
+    // ============================================================================
+    // TEST 2 - sprawdza walidację formularza: pole wyszukiwania ma atrybut "required",
+    // więc kliknięcie lupki bez wpisanej frazy nie powinno nigdzie nawigować.
+    // ============================================================================
+    it("Should stay on the home page when clicking search icon with an empty search field", async () => {
+        // klika w ikonę lupki, nic wcześniej nie wpisując w pole wyszukiwania
         await SearchBarPage.clickSearchIcon();
+        // sprawdza, że URL się NIE zmienił - przeglądarka zablokowała wysłanie pustego formularza
         await expect(browser).toHaveUrl(helionHomeUrl);
     });
 
-    // TEST 3: wpisuje frazę w pole wyszukiwania i sprawdza, że pojawia się popup z podpowiedziami
-    it(" Should type search value and verify visible popup", async () => {
+    // ============================================================================
+    // TEST 3 - symuluje wpisywanie frazy przez użytkownika i sprawdza, że strona
+    // reaguje na to podpowiedziami (typowe "auto-suggest" pod polem wyszukiwania).
+    // ============================================================================
+    it("Should show the suggestion popup after typing a search phrase", async () => {
+         // krok 1: wpisuje searchPhrase ("testowanie oprogramowania") w pole wyszukiwania
          await SearchBarPage.typeSearchPhrase(searchPhrase);
+         // krok 2: czeka, aż pod polem pojawi się popup z podpowiedziami (.suggest-list)
          await SearchBarPage.suggestPopupIsVisible();
         });
 
-    // TEST 4: klika w przycisk "Wszystkie" w popupie podpowiedzi i sprawdza, że przeglądarka
-    // przenosi na stronę wyników wyszukiwania (searchPageUrl)
-    it(" Should click see all books button", async () => {
-         // czeka aż link "Wszystkie" zdąży się zaktualizować do pełnej frazy przed kliknięciem
-         // (patrz komentarz w SearchbarPage.ts przy waitForSeeAllBooksLinkToMatchPhrase - strona
-         // czasem aktualizuje ten link z opóźnieniem/nie po kolei, stąd ten test bywa flaky)
+    // ============================================================================
+    // TEST 4 - kontynuacja TEST 3: w popupie podpowiedzi jest link "Wszystkie",
+    // prowadzący do pełnej listy wyników. Test klika w niego i sprawdza nawigację.
+    //
+    // UWAGA na flakiness: strona helion.pl aktualizuje href tego linku asynchronicznie,
+    // w miarę wpisywania kolejnych znaków (odpowiedzi AJAX mogą wrócić nie po kolei),
+    // dlatego zanim klikniemy, czekamy aż link "dogoni" pełną wpisaną frazę - inaczej
+    // kliknięcie mogłoby przenieść na wyniki dla niepełnego, wpisywanego w danym
+    // momencie tekstu. Mimo to test bywa czasem czerwony na żywej stronie (patrz
+    // komentarz przy SearchBarPage.waitForSeeAllBooksLinkToMatchPhrase).
+    // ============================================================================
+    it("Should navigate to the search results page when clicking the \"see all books\" link", async () => {
+         // krok 1: czeka aż href linku "Wszystkie" zawiera pełną frazę searchPhrase
          await SearchBarPage.waitForSeeAllBooksLinkToMatchPhrase(searchPhrase);
+         // krok 2: klika w link "Wszystkie" (przewija do niego widok i klika)
          await SearchBarPage.clickOnSeeAllBookBtn();
+         // krok 3: sprawdza, że przeglądarka nawigowała na stronę wyników (searchPageUrl)
          await expect(browser).toHaveUrl(searchPageUrl);
 
     });
 
-    // TEST 5: na stronie wyników wyszukiwania sprawdza tytuł (H1) oraz liczbę znalezionych książek
-    it(" Should verify visible correctly title and number of  books", async () => {
+    // ============================================================================
+    // TEST 5 - ostatni krok scenariusza: na stronie wyników (na którą przenieśliśmy
+    // się w TEST 4) sprawdza, czy treść strony faktycznie odpowiada wyszukanej frazie.
+    // Zależny od TEST 4 - jeśli tamten nie zdąży nawigować, ten test też padnie,
+    // bo będzie szukał tytułu/listy książek wciąż na stronie głównej.
+    // ============================================================================
+    it("Should display the correct title and number of books on the search results page", async () => {
+         // krok 1: odczytuje tekst nagłówka H1 (div#page-title > h1) ze strony wyników
          const title: string = await SearchResultPage.getPageTitle();
+         // krok 2: sprawdza, że nagłówek zawiera oczekiwany tekst - potwierdza, że strona
+         // "wie", czego szukaliśmy (searchResultTitle = 'Szukasz "testowanie oprogramowania"')
          await expect(title).toContain(searchResultTitle)
+         // krok 3: liczy elementy listy wyników (ul.list > li)
          const numberOfBooks = await SearchResultPage.getNumberOfBooks();
+         // krok 4: sprawdza, że liczba znalezionych książek to dokładnie 25
+         // (wartość zweryfikowana ręcznie na żywej stronie dla tej konkretnej frazy;
+         // jeśli Helion doda/usunie pasującą książkę, ta liczba się zdezaktualizuje)
          await expect (numberOfBooks).toEqual(25);
 
     });
