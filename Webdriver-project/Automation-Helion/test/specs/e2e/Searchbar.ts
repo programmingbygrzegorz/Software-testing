@@ -3,7 +3,7 @@ import GlobalPage from "../../pages/GlobalPage";
 // URL strony głównej Helion
 import {helionHomeUrl, searchPageUrl} from "../../config/pageUrl";
 // fraza użyta do przetestowania wyszukiwarki
-import {searchPhrase} from "../../config/data";
+import {searchPhrase, searchResultTitle} from "../../config/data";
 // PageObject searchbara - selektory i akcje związane z wyszukiwarką w nagłówku
 import SearchBarPage from "../../pages/components/SearchbarPage";
 
@@ -47,11 +47,12 @@ describe ("E2E Searchbar", () => {
 
     });
 
-    // TEST 5: na stronie wyników wyszukiwania odczytuje tytuł (H1) i wypisuje go w konsoli
-    // TODO: brakuje asercji - test niczego jeszcze nie sprawdza, tylko loguje wynik
+    // TEST 5: na stronie wyników wyszukiwania sprawdza tytuł (H1) oraz liczbę znalezionych książek
     it(" Should verify visible correctly title and number of  books", async () => {
          const title: string = await SearchResultPage.getPageTitle();
-         console.log(title)
+         await expect(title).toContain(searchResultTitle)
+         const numberOfBooks = await SearchResultPage.getNumberOfBooks();
+         await expect (numberOfBooks).toEqual(25);
 
     });
 });
