@@ -26,11 +26,19 @@ export const config: WebdriverIO.Config = {
 
         './test/specs/**/*.ts'
         // ToDo: define location for spec files here
-    ],
+        ],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
     ],
+    suites: {
+        debug: [
+            './test/specs/e2e/Searchbar.ts'
+        ],
+         e2e: [
+            './test/specs/e2e/Searchbar.ts'
+        ],
+    },
     //
     // ============
     // Capabilities
@@ -107,7 +115,7 @@ export const config: WebdriverIO.Config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver', 'devtools'],
+    //services: ['chromedriver', 'devtools'],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -209,8 +217,9 @@ export const config: WebdriverIO.Config = {
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    // beforeTest: function (test, context) {
-    // },
+    beforeTest: function () {
+        browser.maximizeWindow();
+    },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)

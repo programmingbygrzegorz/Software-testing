@@ -1,0 +1,1 @@
+export const helionHomeUrl:string = "https://helion.pl/";
