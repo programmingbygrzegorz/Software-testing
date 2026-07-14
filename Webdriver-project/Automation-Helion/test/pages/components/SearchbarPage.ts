@@ -1,57 +1,93 @@
-// PageObject komponentu searchbara - metody i selektory związane z wyszukiwarką, wielokrotnego użytku w różnych testach
+// PageObject komponentu searchbara - selektory i akcje związane z wyszukiwarką w nagłówku strony,
+// wielokrotnego użytku w różnych testach zamiast powtarzania tych samych selektorów w specach
+
 class SearchBarPage {
-    // 1. selektor pola wyszukiwania na stronie - dodane jako pierwsze, do weryfikacji widoczności searchbara
+
+    // === SELEKTORY (gettery) ===
+    // Każdy getter zwraca lokalizator jednego elementu UI. Same w sobie niczego nie robią -
+    // służą jako "adres" elementu, z którego korzystają metody poniżej (sekcja AKCJE).
+
+    // pole tekstowe searchbara, w które wpisuje się szukaną frazę
+    // używane przez: searchBarIsVisible(), typeSearchPhrase()
     get searchInput() {
         return $("#header-search-text");
     }
 
-    // 3. selektor ikony (przycisku) otwierającej/wyszukującej w wyszukiwarce - dodane po searchBarIsVisible
+    // przycisk (ikona lupki) obok pola wyszukiwania, uruchamiający wyszukiwanie po kliknięciu
+    // używane przez: clickSearchIcon()
     get searchIcon() {
         return $('//*[@id="szukanie"]//button[@aria-label="Szukaj"]');
     }
 
-    // 5a. selektor popupu z podpowiedziami wyszukiwania, pojawiającego się po wpisaniu frazy
+    // popup z podpowiedziami wyników, który wyskakuje pod polem po wpisaniu frazy
+    // używane przez: suggestPopupIsVisible()
     get suggestPopup() {
         return $("form#szukanie .suggest-list");
     }
+
+    // przycisk "Wszystkie" wewnątrz popupu podpowiedzi, przenoszący do pełnej listy wyników wyszukiwania
+    // używane przez: clickOnSeeAllBookBtn()
     get seeAllBooksBtn(){
         return $("li.wszystkie > p > a");
     }
 
-    async clickOnSeeAllBookBtn(){
-        const btn = await this.seeAllBooksBtn;
-        await btn.waitForDisplayed();
+    // === AKCJE (metody) ===
+    // Metody wykonują konkretny krok testu na elemencie wskazanym przez odpowiedni getter powyżej.
+
+    // krok weryfikacyjny: sprawdza, czy pole wyszukiwania (searchInput) jest widoczne na stronie
+    // służy do potwierdzenia, że searchbar w ogóle się załadował, zanim zaczniemy w nim cokolwiek robić
+    async searchBarIsVisible(){
+        const input = await this.searchInput;
+        await input.waitForDisplayed();
     }
 
-
-    // 5b. sprawdza, czy popup z podpowiedziami jest widoczny na stronie
-    async suggestPopupIsVisible() {
-        const popup = await this.suggestPopup;
-        await popup.waitForDisplayed();
-    }
-
-    // 5. wpisuje podaną frazę w pole wyszukiwania - dodane jako ostatnie, do testu wpisywania frazy i popupu podpowiedzi
+    // krok akcji: wpisuje podaną frazę (value) w pole wyszukiwania (searchInput)
+    // służy do symulacji wpisania hasła przez użytkownika, np. przed sprawdzeniem podpowiedzi
     async typeSearchPhrase(value: string) {
         const input = await this.searchInput;
-        // czeka, aż pole będzie widoczne, zanim spróbuje coś w nie wpisać
         await input.waitForDisplayed();
-        // wpisuje przekazaną frazę do pola wyszukiwania
         await input.setValue(value);
     }
 
-    // 4. kliknięcie w ikonę wyszukiwania - czeka aż będzie klikalna, dopiero potem klika
+    // krok akcji: klika w ikonę wyszukiwania (searchIcon), czeka aż będzie klikalna
+    // służy do zatwierdzenia wpisanej frazy i wywołania wyszukiwania
     async clickSearchIcon() {
         const icon = await this.searchIcon;
         await icon.waitForClickable();
         await icon.click();
     }
 
-    // 2. sprawdza, czy pole wyszukiwania jest widoczne na stronie - druga rzecz dodana po samym selektorze
-    async searchBarIsVisible(){
-        const input = await this.searchInput;
-        await input.waitForDisplayed();
+    // krok weryfikacyjny: sprawdza, czy popup z podpowiedziami (suggestPopup) pojawił się po wpisaniu frazy
+    async suggestPopupIsVisible() {
+        const popup = await this.suggestPopup;
+        await popup.waitForDisplayed();
+    }
+
+    // krok pomocniczy: strona aktualizuje link przycisku "Wszystkie" asynchronicznie (debounce) w trakcie
+    // wpisywania frazy, a odpowiedzi kolejnych zapytań AJAX mogą wrócić nie po kolei - href bywa przez
+    // chwilę "prawie kompletny" (np. bez ostatniej litery) i wygląda na ustabilizowany, zanim dotrze
+    // ostatnia, właściwa odpowiedź. Dlatego zamiast jednorazowo czekać na stabilność, próbujemy cyklicznie,
+    // aż href faktycznie zawiera pełną frazę - a jeśli ustabilizuje się na złej wartości, próbujemy dalej.
+    async waitForSeeAllBooksLinkToMatchPhrase(phrase: string) {
+        const btn = await this.seeAllBooksBtn;
+
+        await browser.waitUntil(
+            async () => (await btn.getAttribute("href") ?? "").includes(phrase),
+            { timeout: 15000, interval: 300, timeoutMsg: `Link "Wszystkie" nie zaktualizował się do frazy "${phrase}"` }
+        );
+    }
+
+    // krok akcji: klika w przycisk "Wszystkie" (seeAllBooksBtn) w popupie podpowiedzi,
+    // czeka aż będzie klikalny, przewija do niego widok (na wypadek gdyby był poza ekranem)
+    // i przenosi do pełnej listy wyników wyszukiwania
+    async clickOnSeeAllBookBtn(){
+        const btn = await this.seeAllBooksBtn;
+        await btn.waitForClickable();
+        await btn.scrollIntoView();
+        await btn.click();
     }
 }
 
-// 6. eksport gotowej instancji, żeby korzystać z komponentu bez tworzenia obiektu w testach
+// eksport gotowej (singleton) instancji, żeby w testach korzystać z SearchBarPage.metoda(...)
+// bez ręcznego tworzenia obiektu przez `new SearchBarPage()`
 export default new SearchBarPage();
