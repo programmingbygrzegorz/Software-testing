@@ -101,15 +101,37 @@ describe ("E2E Searchbar", () => {
         // krok 2: odczytuje wartość pola i sprawdza, że jest pusta
         await expect(await SearchBarPage.getInputValue()).toContain("");
     })
+    // ============================================================================
+    // TEST 7 - scenariusz negatywny: wyszukanie frazy, która nie pasuje do żadnej książki
+    // (incorrectSearchPhrase = "blablablabla" z config/data.ts). Zamiast przechodzić przez
+    // popup podpowiedzi (jak TEST 3/4), test od razu klika ikonę lupki (SearchBarPage.clickSearchIcon),
+    // co wysyła pełny formularz wyszukiwania i przenosi na stronę wyników. Tam, zamiast listy
+    // książek, strona pokazuje komunikat div.not-found z tekstem "Nie znaleziono szukanej frazy"
+    // (notFoundMessage z config/data.ts) - dokładnie ten komunikat test weryfikuje.
+    // ============================================================================
     it("Should type incorrect book name and verify alert ", async () =>{
+        // krok 1: wpisuje frazę, która nie pasuje do żadnej książki (incorrectSearchPhrase)
         await SearchBarPage.typeSearchPhrase(incorrectSearchPhrase)
-        await SearchBarPage.clickSearchIcon;
-        await expect (SearchBarPage.getNotFoundAlertText()).toContain(notFoundMessage);
-    })
-    
-    it("Should clear input value and click on search icon", async () => {
-        await SearchBarPage.clearSearchBar();
+        // krok 2: klika ikonę wyszukiwania, żeby wysłać zapytanie (nawiguje na stronę wyników)
         await SearchBarPage.clickSearchIcon();
+        // krok 3: czeka na komunikat "brak wyników" (div.not-found) i sprawdza jego treść
+        await expect(await SearchBarPage.getNotFoundAlertText()).toContain(notFoundMessage);
+    })
+
+    // ============================================================================
+    // TEST 8 - podobnie jak TEST 2, sprawdza kliknięcie ikony lupki z pustym polem
+    // wyszukiwania, ale tym razem pole jest najpierw jawnie czyszczone (na wypadek gdyby
+    // zostało w nim coś z TEST 7). browser.pause(4000) daje czas na obejrzenie efektu
+    // w przeglądarce - nie jest to jednak asercja, więc test przejdzie nawet jeśli
+    // kliknięcie coś zepsuje; brakuje tu sprawdzenia (np. że URL się nie zmienił, jak
+    // w TEST 2), więc realnie test niczego jeszcze nie weryfikuje.
+    // ============================================================================
+    it("Should clear input value and click on search icon", async () => {
+        // krok 1: czyści pole wyszukiwania
+        await SearchBarPage.clearSearchBar();
+        // krok 2: klika ikonę wyszukiwania z pustym polem
+        await SearchBarPage.clickSearchIcon();
+        // krok 3: pauza 4s (do ręcznej obserwacji) - TODO: zastąpić realną asercją
         await browser.pause(4000)
 
     })
