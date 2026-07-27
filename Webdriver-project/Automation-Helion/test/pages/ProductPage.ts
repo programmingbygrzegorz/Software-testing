@@ -19,6 +19,20 @@ class ProductPage {
     get addToCartBtn() {
         return $("a.addToBasket");
     }
+    // cena domyślnie zaznaczonej wersji produktu (drukowanej) - #cena_d
+    // (ebook ma osobny element #cena_e; #cart-edit-summary to element ze strony koszyka,
+    // nie strony produktu, więc nie pasował tutaj)
+    // używane przez: getProductPrice()
+    get productPrice(){
+        return $("#cena_d");
+    }
+
+    // krok weryfikacyjny: czeka aż cena (productPrice) będzie widoczna i zwraca jej tekst
+    async getProductPrice():Promise<string> {
+        const price = await this.productPrice;
+        await price.waitForDisplayed();
+        return await price.getText();
+    }
 
     // === AKCJE (metody) ===
 
