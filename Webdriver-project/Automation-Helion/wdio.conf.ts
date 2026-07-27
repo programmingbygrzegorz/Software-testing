@@ -33,10 +33,12 @@ export const config: WebdriverIO.Config = {
     ],
     suites: {
         debug: [
-            './test/specs/e2e/Searchbar.ts'
+            './test/specs/e2e/Products.ts'
         ],
          e2e: [
-            './test/specs/e2e/Searchbar.ts'
+            './test/specs/e2e/Searchbar.ts',
+            './test/specs/e2e/Products.ts'
+
         ],
     },
     //

@@ -19,7 +19,21 @@ class SearchResultPage {
         return $$("ul.list > li");
     }
 
+    // link pierwszej książki na liście wyników (pierwszy <li> w ul.list)
+    // używane przez: clickOnFirstBookItem()
+    get firstBookItem(){
+        return $("ul.list > li:nth-child(1) > a")
+    }
+
     // === AKCJE (metody) ===
+
+    // klika w pierwszą książkę z listy wyników (firstBookItem) - czeka aż będzie widoczna,
+    // dopiero potem klika; służy do przejścia ze strony wyników na stronę konkretnego produktu
+    async clickOnFirstBookItem(){
+        const item =  await this.firstBookItem;
+        await item.waitForDisplayed();
+        await item.click();
+    }
 
     // czeka, aż nagłówek (pageTitle) będzie widoczny, i zwraca jego tekst
     // służy do sprawdzenia, że wyszukiwarka pokazała wyniki dla właściwej, wpisanej frazy
