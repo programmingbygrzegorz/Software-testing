@@ -64,7 +64,11 @@ export const config: WebdriverIO.Config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'chrome',
+        // wymusza klasyczny protokół WebDriver zamiast domyślnego w WDIO v9 WebDriver BiDi -
+        // natywne alerty (confirm() w CartPage.clickOnDeleteSelectedLabel) pod BiDi znikały
+        // niemal natychmiast po otwarciu, zanim zdążyliśmy je odczytać/zaakceptować
+        'wdio:enforceWebDriverClassic': true
     }],
 
     //
@@ -219,9 +223,11 @@ export const config: WebdriverIO.Config = {
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    beforeTest: function () {
-        browser.maximizeWindow();
-    },
+    // maximizeWindow() przeniesione do before() w poszczególnych plikach spec (Products.ts,
+    // Searchbar.ts) - tutaj w beforeTest wykonywałoby się PRZED KAŻDYM "it()" (4x w Products.ts,
+    // 8x w Searchbar.ts), a wystarczy zrobić to raz na cały plik
+    // beforeTest: function () {
+    // },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)

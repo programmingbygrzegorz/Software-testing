@@ -27,6 +27,7 @@ class ProductPage {
         return $("#cena_d");
     }
 
+
     // krok weryfikacyjny: czeka aż cena (productPrice) będzie widoczna i zwraca jej tekst
     async getProductPrice():Promise<string> {
         const price = await this.productPrice;

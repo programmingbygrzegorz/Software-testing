@@ -14,6 +14,12 @@ import SearchResultPage from "../../pages/SearchResultPage";
 
 describe ("E2E Searchbar", () => {
 
+    // hook wykonywany raz przed wszystkimi testami w tym pliku: maksymalizuje okno (raz na cały
+    // plik, a nie przed każdym testem - stąd tutaj, a nie w globalnym beforeTest w wdio.conf.ts)
+    before(async () => {
+        await browser.maximizeWindow();
+    })
+
     // ============================================================================
     // TEST 1 - punkt wyjścia dla całego scenariusza: wchodzimy na stronę główną
     // Helion i upewniamy się, że pasek wyszukiwania w ogóle jest widoczny, zanim
