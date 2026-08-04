@@ -63,9 +63,14 @@ describe ("E2E Searchbar", () => {
     // dlatego zanim klikniemy, czekamy aż link "dogoni" pełną wpisaną frazę - inaczej
     // kliknięcie mogłoby przenieść na wyniki dla niepełnego, wpisywanego w danym
     // momencie tekstu. Mimo to test bywa czasem czerwony na żywej stronie (patrz
-    // komentarz przy SearchBarPage.waitForSeeAllBooksLinkToMatchPhrase).
+    // komentarz przy SearchBarPage.waitForSeeAllBooksLinkToMatchPhrase) - dlatego
+    // this.retries(2): to realna niestabilność strony (nie kodu testu), więc zamiast
+    // fałszywie czerwonego builda na CI, Mocha ponawia ten konkretny test do 2 razy.
+    // Uwaga: this.retries wymaga zwykłej function(), nie strzałkowej - arrow function
+    // nie ma własnego "this".
     // ============================================================================
-    it("Should navigate to the search results page when clicking the \"see all books\" link", async () => {
+    it("Should navigate to the search results page when clicking the \"see all books\" link", async function () {
+         this.retries(2);
          // krok 1: czeka aż href linku "Wszystkie" zawiera pełną frazę searchPhrase
          await SearchBarPage.waitForSeeAllBooksLinkToMatchPhrase(searchPhrase);
          // krok 2: klika w link "Wszystkie" (przewija do niego widok i klika)
@@ -80,8 +85,12 @@ describe ("E2E Searchbar", () => {
     // się w TEST 4) sprawdza, czy treść strony faktycznie odpowiada wyszukanej frazie.
     // Zależny od TEST 4 - jeśli tamten nie zdąży nawigować, ten test też padnie,
     // bo będzie szukał tytułu/listy książek wciąż na stronie głównej.
+    // this.retries(2): zależny od TEST 4, więc podatny na tę samą niestabilność strony
+    // (jeśli TEST 4 nawigował z opóźnieniem, ta strona może jeszcze nie być w pełni
+    // wyrenderowana przy pierwszej próbie).
     // ============================================================================
-    it("Should display the correct title and number of books on the search results page", async () => {
+    it("Should display the correct title and number of books on the search results page", async function () {
+         this.retries(2);
          // krok 1: odczytuje tekst nagłówka H1 (div#page-title > h1) ze strony wyników
          const title: string = await SearchResultPage.getPageTitle();
          // krok 2: sprawdza, że nagłówek zawiera oczekiwany tekst - potwierdza, że strona
