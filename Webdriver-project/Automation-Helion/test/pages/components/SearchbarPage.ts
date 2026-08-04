@@ -90,13 +90,16 @@ class SearchBarPage {
     // próbujemy cyklicznie, aż href faktycznie zawiera pełną frazę.
     // Wywoływane w TEST 4 w Searchbar.ts, tuż przed clickOnSeeAllBookBtn - mimo tego zabezpieczenia
     // test bywa czasem czerwony na żywej stronie (to realna niestabilność strony, nie kodu testu).
+    // Timeout podniesiony z 15s na 20s jako dodatkowy zapas na wolniejsze odpowiedzi AJAX-a
+    // (obok retry(2) dodanego na poziomie testów w Searchbar.ts - to dwa niezależne
+    // zabezpieczenia na tę samą, znaną niestabilność strony Helion).
     async waitForSeeAllBooksLinkToMatchPhrase(phrase: string) {
         const btn = await this.seeAllBooksBtn;
 
-        // browser.waitUntil odpytuje warunek co interval (300ms), aż zwróci true albo minie timeout (15s)
+        // browser.waitUntil odpytuje warunek co interval (300ms), aż zwróci true albo minie timeout (20s)
         await browser.waitUntil(
             async () => (await btn.getAttribute("href") ?? "").includes(phrase),
-            { timeout: 15000, interval: 300, timeoutMsg: `Link "Wszystkie" nie zaktualizował się do frazy "${phrase}"` }
+            { timeout: 20000, interval: 300, timeoutMsg: `Link "Wszystkie" nie zaktualizował się do frazy "${phrase}"` }
         );
     }
 

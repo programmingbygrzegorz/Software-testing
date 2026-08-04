@@ -68,7 +68,15 @@ export const config: WebdriverIO.Config = {
         // wymusza klasyczny protokół WebDriver zamiast domyślnego w WDIO v9 WebDriver BiDi -
         // natywne alerty (confirm() w CartPage.clickOnDeleteSelectedLabel) pod BiDi znikały
         // niemal natychmiast po otwarciu, zanim zdążyliśmy je odczytać/zaakceptować
-        'wdio:enforceWebDriverClassic': true
+        'wdio:enforceWebDriverClassic': true,
+        // tryb headless włączany zmienną środowiskową HEADLESS=true (np. `HEADLESS=true npm run debug`
+        // w Git Bash, albo `$env:HEADLESS='true'; npm run debug` w PowerShell) - domyślnie (bez zmiennej)
+        // Chrome uruchamia się normalnie, z widocznym oknem
+        'goog:chromeOptions': {
+            args: process.env.HEADLESS === 'true'
+                ? ['--headless=new', '--window-size=1920,1080']
+                : []
+        }
     }],
 
     //
